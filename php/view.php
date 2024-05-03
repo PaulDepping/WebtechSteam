@@ -25,10 +25,9 @@ include_once "config.php"
         $username = $_SESSION['user_name'];
 
         $filter_data = false;
-        if ($_SERVER["REQUEST_METHOD"] == "GET" && (isset($_GET['ftitel']) || isset($_GET['fstaffeln']) || isset($_GET['fgenre']) || isset($_GET['fplatform']))) {
+        if ($_SERVER["REQUEST_METHOD"] == "GET" && (isset($_GET['ftitel']) || isset($_GET['fgenre']) || isset($_GET['fplatform']))) {
             $filter_data = true;
             $filter_titel = isset($_GET["ftitel"]) ? '%' . $_GET['ftitel'] . '%' : '%';
-            $filter_staffeln = isset($_GET["fstaffeln"]) ? '%' . $_GET['fstaffeln'] . '%' : '%';
             $filter_genre = isset($_GET["fgenre"]) ? '%' . $_GET['fgenre'] . '%' : '%';
             $filter_platform = isset($_GET["fplatform"]) ? '%' . $_GET['fplatform'] . '%' : '%';
         }
@@ -67,7 +66,6 @@ include_once "config.php"
     <div class="container_top">
         <form method="get">
             <input type="text" id="search" name="ftitel" placeholder="Titel">
-            <input type="text" id="staffeln" name="fstaffeln" placeholder="Staffeln">
             <input type="text" id="genre" name="fgenre" placeholder="Genre">
             <input type="text" id="Plattform" name="fplatform" placeholder="Plattform"><br>
             <button type="submit">Suchen</button>
