@@ -2,7 +2,7 @@
 // Basic connection settings
 $databaseHost = 'localhost';
 $databaseUsername = 'root';
-$databasePassword = '050324';
+$databasePassword = '';
 $databaseName = 'Webtech';
 
 // Connect to the database
