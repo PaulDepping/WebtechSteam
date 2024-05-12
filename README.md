@@ -1,11 +1,11 @@
 # WebtechSteam
 
 ## Rollenverteilung
-* Paul Simon Depping
+* Paul Simon Depping, 1715018
   * PHP-Code
   * SQL-Code
   * README
-* Jannis Leonard Goltermann
+* Jannis Leonard Goltermann, 1714572
   * Erster Prototyp HTML&PHP-Code Main Page
   * Suchfunktion SQL-Code
   * Wireframe-Skizzen
