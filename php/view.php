@@ -8,11 +8,16 @@ include_once "config.php"
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="styles2.css">
-    <title>Übersicht</title>
+    <link rel="stylesheet" href="css/viewstyle.css">
+    <title>STEAM</title>
 </head>
 
 <body>
+    <div class="contain-header">
+        <h1>STEAM&#8482;<form action="logout.php"><input type="submit" value="Log out"></form>
+        </h1>
+    </div>
+
     <div>
         <?php
 
@@ -51,32 +56,26 @@ include_once "config.php"
                 exit('error in sql insert3');
             }
         }
-
-
-        echo "<h1>Übersicht von $username</h1>";
-
-        // echo "Hallo User: " . $username . " (" . $userid . ")";
         
 
         ?>
     </div>
-    <form action="logout.php">
-        <input type="submit" value="Log out">
-    </form>
+
+
     <div class="container_top">
         <form method="get">
-            <input type="text" id="search" name="ftitel" placeholder="Titel">
+            <input type="text" id="titel" name="ftitel" placeholder="Titel">
             <input type="text" id="genre" name="fgenre" placeholder="Genre">
-            <input type="text" id="Plattform" name="fplatform" placeholder="Plattform"><br>
-            <button type="submit">Suchen</button>
+            <input type="text" id="Plattform" name="fplatform" placeholder="Plattform">
+            <button type="submit" id="search">Suchen</button>
         </form>
     </div>
     <div class="container_bot">
         <form id="add_form" name="add_form" method="post"></form>
-        <table>
+        <table class="table-container">
             <thead>
                 <tr>
-                    <th>n</th>
+                    <th id="singleHashtag">#</th>
                     <th>Titel</th>
                     <th>Anz. Staffeln</th>
                     <th>Genre</th>
@@ -85,8 +84,7 @@ include_once "config.php"
             </thead>
             <tbody>
                 <tr>
-                    <td class="text_center"><button type="submit" id="addBtn" name="addBtn" value="submit"
-                            form="add_form">+</button></td>
+                    <td class="text_center"><button type="submit" id="addBtn" name="addBtn" value="submit" form="add_form">+</button></td>
                     <td class="text_center"><input type="text" id="titel" name="titel" form="add_form"></td>
                     <td class="text_center"><input type="number" id="staffeln" name="staffeln" form="add_form"></td>
                     <td class="text_center"><input type="text" id="genre" name="genre" form="add_form"></td>
@@ -153,9 +151,6 @@ include_once "config.php"
 
             </tbody>
         </table>
-
-
-
     </div>
 
 </body>
