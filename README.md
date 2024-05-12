@@ -1,8 +1,24 @@
 # WebtechSteam
 
-University Project
+## Rollenverteilung
+* Paul Simon Depping
+  * PHP-Code
+  * SQL-Code
+  * README
+* Jannis Leonard Goltermann
+  * Erster Prototyp HTML&PHP-Code Main Page
+  * Suchfunktion SQL-Code
+  * Wireframe-Skizzen
+  * Webdesign Login & Register
+* Aslan Khajik, 1715144
+  * Wireframe-Skizzen
+  * Webdesign Main Page
+* Maxim Malkov, 1714776
+  * Webdesign Main Page
 
-## Linux Setup
+## Linux Example Setup
+
+In `www/config.php` kann der Login für die Datenbank angepasst werden. (Nutzername, Passwort, URL etc. pp.)
 
 ```sh
 # starting the test server
@@ -13,7 +29,14 @@ php -S localhost:8000
 systemctl start mariadb.service 
 
 # import db
-mariadb -u root -p < sql/db.sql
+mariadb -u root -p < db/db.sql
 ```
 
-[Link to Register Page](http://localhost:8000/php/register.php)
+## Login
+
+Nutzer können auf der Register Page selbst eingerichtet werden. Es gibt aber bereits einen User:
+
+* Username: demo
+* Passwort: demo
+
+[Link to Register Page](http://localhost:8000/www/register.php)
