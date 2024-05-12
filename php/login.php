@@ -32,7 +32,7 @@ session_start();
             $result = $statement->get_result();
 
             if (mysqli_num_rows($result) == 0) {
-                $errorMessage = "<strong>Ungültiger Nutzername!<br></strong>";
+                $errorMessage = "<p class=\"error\"><strong>Ungültiger Benutzername!</strong></p>";
             } else {
                 assert(mysqli_num_rows($result) == 1);
 
@@ -45,7 +45,7 @@ session_start();
                     header('Location: view.php'); // redirect
                     exit;
                 } else {
-                    $errorMessage = "<strong>Ungültiges Passwort!<br></strong>";
+                    $errorMessage = "<p class=\"error\"><strong>Ungültiges Passwort!</strong></p>";
                 }
             }
         }
@@ -58,7 +58,8 @@ session_start();
         <form method="post">
             <input type="text" id="name" placeholder="Benutzername" name="username" required><br>
             <input type="password" id="password" name="password" placeholder="Passwort" required><br>
-            <button type="submit">Login</button>
+            <button type="submit">Login</button><br>
+            <p>Noch kein Account? <a href="register.php">Registriere dich hier!</a></p>
         </form>
 
 </body>

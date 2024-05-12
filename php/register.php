@@ -23,16 +23,16 @@ session_start();
             $password = $_POST['password'];
             $password2 = $_POST['password2'];
 
-            if (strlen($username) == 0) {
-                echo '<Bitte ein Nutzernamen angeben<br>';
-                $error = true;
-            }
-            if (strlen($password) == 0) {
-                echo 'Bitte ein Passwort angeben<br>';
-                $error = true;
-            }
+            //if (strlen($username) == 0) {
+            //    echo '<Bitte ein Nutzernamen angeben<br>';
+            //    $error = true;
+            //}
+            //if (strlen($password) == 0) {
+            //    echo 'Bitte ein Passwort angeben<br>';
+            //    $error = true;
+            //}
             if ($password != $password2) {
-                echo 'Die Passwörter müssen übereinstimmen<br>';
+                echo "<p class=\"error\">Die Passwörter müssen übereinstimmen</p>";
                 $error = true;
             }
 
@@ -49,7 +49,7 @@ session_start();
                     $res = $statement->get_result();
 
                     if (mysqli_num_rows($res) > 0) {
-                        echo 'Username Already Taken!<br>';
+                        echo "<p class=\"error\">Benutzer existiert bereits!</p>";
                         $error = true;
                     }
                 }
@@ -64,10 +64,10 @@ session_start();
                 $result = $statement->execute();
 
                 if ($result) {
-                    echo 'Du wurdest erfolgreich registriert. <a href="login.php">Zum Login</a>';
+                    echo "<p class=\"info\">Du wurdest erfolgreich registriert. <a href=\"login.php\">Zum Login</a></p>";
                     $showFormular = false;
                 } else {
-                    echo 'Beim Abspeichern ist leider ein Fehler aufgetreten<br>';
+                    echo "<p class=\"error\">Beim Abspeichern ist leider ein Fehler aufgetreten</p>";
                 }
             }
         }
@@ -75,8 +75,9 @@ session_start();
         <form method="POST">
             <input type="text" id="name" placeholder="Benutzername" name="username" required><br>
             <input type="password" id="password" name="password" placeholder="Passwort" required><br>
-            <input type="password" id="password2" name="password2" placeholder="Passwort Wiederholen" required><br>
-            <button type="submit">Register</button>
+            <input type="password" id="password2" name="password2" placeholder="Passwort wiederholen" required><br>
+            <button type="submit">Registrieren</button><br>
+            <p>zurück zum <a href="login.php">Login</a></p>
         </form>
 
 

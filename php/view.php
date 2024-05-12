@@ -14,7 +14,8 @@ include_once "config.php"
 
 <body>
     <div class="contain-header">
-        <h1>STEAM&#8482;<form action="logout.php"><input type="submit" value="Log out"></form>
+        <h1> &zwnj; <!-- STEAM&#8482;  -->
+            <form action="logout.php"><input type="submit" value="Log out"></form>
         </h1>
     </div>
 
@@ -56,7 +57,7 @@ include_once "config.php"
                 exit('error in sql insert3');
             }
         }
-        
+
 
         ?>
     </div>
@@ -76,19 +77,20 @@ include_once "config.php"
             <thead>
                 <tr>
                     <th id="singleHashtag">#</th>
-                    <th>Titel</th>
-                    <th>Anz. Staffeln</th>
-                    <th>Genre</th>
-                    <th>Streaming-Plattform</th>
+                    <th class="text_center">Titel</th>
+                    <th class="text_center"">Anz. Staffeln</th>
+                    <th class=" text_center">Genre</th>
+                    <th class="text_center">Streaming-Plattform</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td class="text_center"><button type="submit" id="addBtn" name="addBtn" value="submit" form="add_form">+</button></td>
-                    <td class="text_center"><input type="text" id="titel" name="titel" form="add_form"></td>
-                    <td class="text_center"><input type="number" id="staffeln" name="staffeln" form="add_form"></td>
-                    <td class="text_center"><input type="text" id="genre" name="genre" form="add_form"></td>
-                    <td class="text_center"><input type="text" id="plattform" name="plattform" form="add_form"></td>
+                    <td class="text_center"><button type="submit" id="addBtn" name="addBtn" value="submit"
+                            form="add_form">+</button></td>
+                    <td><input type="text" id="titel" name="titel" form="add_form"></td>
+                    <td><input type="number" id="staffeln" name="staffeln" form="add_form"></td>
+                    <td><input type="text" id="genre" name="genre" form="add_form"></td>
+                    <td><input type="text" id="plattform" name="plattform" form="add_form"></td>
                 </tr>
                 <?php
                 $extra_elements = 0;
@@ -140,10 +142,10 @@ include_once "config.php"
                     echo '
                 <tr>
                     <td class="text_center">' . $i . '</td>
-                    <td class="text_center">' . $row['title'] . '</td>
-                    <td class="text_center">' . $row['seasons'] . '</td>
-                    <td class="text_center">' . $row['genre'] . '</td>
-                    <td class="text_center">' . $row['platform'] . '</td>
+                    <td class="text_right">' . $row['title'] . '</td>
+                    <td class="text_right">' . $row['seasons'] . '</td>
+                    <td class="text_right">' . $row['genre'] . '</td>
+                    <td class="text_right">' . $row['platform'] . '</td>
                 </tr>';
                 }
 
