@@ -1,9 +1,9 @@
 <?php
 session_start();
 include_once "config.php"
-    ?>
+?>
 <!DOCTYPE html>
-<html>
+<html lang="de">
 
 <head>
     <meta charset="UTF-8">
@@ -14,9 +14,8 @@ include_once "config.php"
 
 <body>
     <div class="contain-header">
-        <h1> &zwnj; <!-- STEAM&#8482;  -->
-            <form action="logout.php"><input type="submit" value="Log out"></form>
-        </h1>
+        <h1> &zwnj; </h1>
+        <form action="logout.php"><input type="submit" value="Log out"></form>
     </div>
 
     <div>
@@ -65,8 +64,8 @@ include_once "config.php"
 
     <div class="container_top">
         <form method="get">
-            <input type="text" id="titel" name="ftitel" placeholder="Titel">
-            <input type="text" id="genre" name="fgenre" placeholder="Genre">
+            <input type="text" id="ftitel" name="ftitel" placeholder="Titel">
+            <input type="text" id="fgenre" name="fgenre" placeholder="Genre">
             <input type="text" id="Plattform" name="fplatform" placeholder="Plattform">
             <button type="submit" id="search">Suchen</button>
         </form>
@@ -78,19 +77,22 @@ include_once "config.php"
                 <tr>
                     <th id="singleHashtag">#</th>
                     <th class="text_center">Titel</th>
-                    <th class="text_center"">Anz. Staffeln</th>
-                    <th class=" text_center">Genre</th>
+                    <th class="text_center">Anz. Staffeln</th>
+                    <th class="text_center">Genre</th>
                     <th class="text_center">Streaming-Plattform</th>
+                    <th></th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td class="text_center"><button type="submit" id="addBtn" name="addBtn" value="submit"
-                            form="add_form">+</button></td>
+                    <td class="text_center"><button type="submit" id="addBtn" name="addBtn" value="submit" form="add_form">+</button></td>
                     <td><input type="text" id="titel" name="titel" form="add_form"></td>
                     <td><input type="number" id="staffeln" name="staffeln" form="add_form"></td>
                     <td><input type="text" id="genre" name="genre" form="add_form"></td>
                     <td><input type="text" id="plattform" name="plattform" form="add_form"></td>
+                    <td></td>
+                    <td></td>
                 </tr>
                 <?php
                 $extra_elements = 0;
@@ -146,6 +148,8 @@ include_once "config.php"
                     <td class="text_right">' . $row['seasons'] . '</td>
                     <td class="text_right">' . $row['genre'] . '</td>
                     <td class="text_right">' . $row['platform'] . '</td>
+                    <td> <button onclick="deleteLine(this)" id="deleteBtn">X</button>  </td>
+                    <td> <button onclick="openEditForm()" id="editBtn">Edit</button>  </td>
                 </tr>';
                 }
 
@@ -154,6 +158,36 @@ include_once "config.php"
             </tbody>
         </table>
     </div>
+    <!-- edit Form -->
+    <div class="form-popup" id="myForm">
+        <form action="/action_page.php" class="form-container">
+            <h1>Edit</h1>
+
+            <input type="text" placeholder="Titel" name="titel" required>
+            <input type="number" placeholder="Staffeln" name="staffel" required>
+            <input type="text" placeholder="Genre" name="genre" required>
+            <input type="text" placeholder="Plattform" name="plattform" required>
+
+            <button type="submit" class="btn">Bestätigen</button>
+            <button type="button" class="btn cancel" onclick="closeEditForm()">Verwerfen</button>
+        </form>
+    </div>
+    <script type="text/javascript">
+        function openEditForm() {
+            document.getElementById("myForm").style.display = "block";
+        }
+
+        function closeEditForm() {
+            document.getElementById("myForm").style.display = "none";
+        }
+
+        function deleteLine(line) {
+            // alert(line.parentNode.parentNode.innerText)
+            var row = line.closest('tr')
+            var cells = row.getElementsByTagName('td')
+            alert("line:" + cells[0].innerText + ", Titel:" + cells[1].innerText + ", Staffel:" + cells[2].innerText + "...")
+        }
+    </script>
 
 </body>
 

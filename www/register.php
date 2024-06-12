@@ -2,7 +2,7 @@
 session_start();
 ?>
 <!DOCTYPE html>
-<html>
+<html lang="de">
 
 <head>
     <meta charset="utf-8">
@@ -79,7 +79,7 @@ session_start();
             <button type="submit">Registrieren</button><br>
             <p>zurück zum <a href="login.php">Login</a></p>
         </form>
-
+    </div>
 
 </body>
 
