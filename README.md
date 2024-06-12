@@ -40,3 +40,5 @@ Nutzer können auf der Register Page selbst eingerichtet werden. Es gibt aber be
 * Passwort: demo
 
 [Link to Register Page](http://localhost:8000/www/register.php)
+
+TestMaxim
