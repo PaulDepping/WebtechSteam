@@ -2,7 +2,7 @@
 session_start();
 ?>
 <!DOCTYPE html>
-<html>
+<html lang="de">
 
 <head>
     <meta charset="utf-8">
@@ -61,7 +61,7 @@ session_start();
             <button type="submit">Login</button><br>
             <p>Noch kein Account? <a href="register.php">Registriere dich hier!</a></p>
         </form>
-
+    </div>
 </body>
 
 </html>
