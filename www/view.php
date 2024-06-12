@@ -87,10 +87,10 @@ include_once "config.php"
             <tbody>
                 <tr>
                     <td class="text_center"><button type="submit" id="addBtn" name="addBtn" value="submit" form="add_form">+</button></td>
-                    <td><input type="text" id="titel" name="titel" form="add_form"></td>
-                    <td><input type="number" id="staffeln" name="staffeln" form="add_form"></td>
-                    <td><input type="text" id="genre" name="genre" form="add_form"></td>
-                    <td><input type="text" id="plattform" name="plattform" form="add_form"></td>
+                    <td><input type="text" id="titel" name="titel" form="add_form" required></td>
+                    <td><input type="number" id="staffeln" name="staffeln" form="add_form" required></td>
+                    <td><input type="text" id="genre" name="genre" form="add_form" required></td>
+                    <td><input type="text" id="plattform" name="plattform" form="add_form" required></td>
                     <td></td>
                     <td></td>
                 </tr>
