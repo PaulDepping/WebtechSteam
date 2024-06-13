@@ -36,39 +36,14 @@ session_start();
                 $error = true;
             }
 
-            //Überprüfe, dass der Nutzer noch nicht registriert wurde
-            if (!$error) {
-                $statement = $mysqli->prepare("SELECT id FROM Users WHERE username = ?");
-                $statement->bind_param("s", $username);
-                $result = $statement->execute();
-
-                if (!$result) {
-                    echo 'SQL Error!<br>';
-                    $error = true;
-                } else {
-                    $res = $statement->get_result();
-
-                    if (mysqli_num_rows($res) > 0) {
-                        echo "<p class=\"error\">Benutzer existiert bereits!</p>";
-                        $error = true;
-                    }
-                }
-            }
-
-            //Keine Fehler, wir können den Nutzer registrieren
-            if (!$error) {
-                $password_hash = password_hash($password, PASSWORD_DEFAULT);
-
-                $statement = $mysqli->prepare("INSERT INTO Users (username, password_hash) VALUES (?, ?)");
-                $statement->bind_param("ss", $username, $password_hash);
-                $result = $statement->execute();
-
-                if ($result) {
-                    echo "<p class=\"info\">Du wurdest erfolgreich registriert. <a href=\"login.php\">Zum Login</a></p>";
-                    $showFormular = false;
-                } else {
-                    echo "<p class=\"error\">Beim Abspeichern ist leider ein Fehler aufgetreten</p>";
-                }
+            $current = GetUserData($username);
+            if ($current['found']) {
+                echo "<p class=\"error\">Benutzer existiert bereits!</p>";
+                $error = true;
+            } else {
+                PostUserData($username, password_hash($password, PASSWORD_DEFAULT));
+                echo "<p class=\"info\">Du wurdest erfolgreich registriert. <a href=\"login.php\">Zum Login</a></p>";
+                $showFormular = false;
             }
         }
         ?>
