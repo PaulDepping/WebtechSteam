@@ -21,15 +21,18 @@
 In `www/config.php` kann der Login für die Datenbank angepasst werden. (Nutzername, Passwort, URL etc. pp.)
 
 ```sh
-# starting the test server
-php -S localhost:8000
-
 # start db
 # can also use enable instead of start if needed
-systemctl start mariadb.service 
+systemctl start mariadb.service
 
 # import db
 mariadb -u root -p < db/db.sql
+
+# start python REST-API (in separate terminal)
+python www/rest.py
+
+# starting the test server (in separate terminal)
+php -S localhost:8000
 ```
 
 ## Login
@@ -40,5 +43,3 @@ Nutzer können auf der Register Page selbst eingerichtet werden. Es gibt aber be
 * Passwort: demo
 
 [Link to Register Page](http://localhost:8000/www/register.php)
-
-TestMaxim

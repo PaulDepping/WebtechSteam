@@ -1,7 +1,7 @@
 <?php
 session_start();
 include_once "config.php"
-?>
+    ?>
 <!DOCTYPE html>
 <html lang="de">
 
@@ -25,37 +25,42 @@ include_once "config.php"
             exit('Bitte zuerst <a href="login.php">einloggen</a>');
         }
 
+        if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['delete_series_id'])) {
+            DeleteWatched($_POST['delete_series_id']);
+            header("Location: {$_SERVER['REQUEST_URI']}", true, 303); // PRG-Pattern
+        }
+
+        if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["edit_series_id"])) {
+            ChangeWatchlist($_POST['edit_series_id'], null, $_POST['edit_title'] ?? null, $_POST['edit_staffeln'] ?? null, $_POST['edit_genre'] ?? null, $_POST['edit_platform'] ?? null);
+            header("Location: {$_SERVER['REQUEST_URI']}", true, 303); // PRG-Pattern
+        }
+
         //Abfrage der Nutzer ID vom Login
         $userid = $_SESSION['user_id'];
         $username = $_SESSION['user_name'];
 
-        $filter_data = false;
+        $filter_data = array();
         if ($_SERVER["REQUEST_METHOD"] == "GET" && (isset($_GET['ftitel']) || isset($_GET['fgenre']) || isset($_GET['fplatform']))) {
-            $filter_data = true;
-            $filter_titel = isset($_GET["ftitel"]) ? '%' . $_GET['ftitel'] . '%' : '%';
-            $filter_genre = isset($_GET["fgenre"]) ? '%' . $_GET['fgenre'] . '%' : '%';
-            $filter_platform = isset($_GET["fplatform"]) ? '%' . $_GET['fplatform'] . '%' : '%';
+            if (isset($_GET['ftitel'])) {
+                $filter_data['title'] = $_GET['ftitel'];
+            }
+            if (isset($_GET['fgenre'])) {
+                $filter_data['genre'] = $_GET['fgenre'];
+            }
+            if (isset($_GET['fplatform'])) {
+                $filter_data['platform'] = $_GET['fplatform'];
+            }
         }
 
         if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["addBtn"])) {
             $title = $_POST['titel'];
             $staffeln = $_POST['staffeln'];
             $genre = $_POST['genre'];
-            $plattform = $_POST['plattform'];
-
-            $stmt = $mysqli->prepare('INSERT INTO Watching (user_id, title, seasons, genre, platform) VALUES (?, ?, ?, ?, ?)');
-            if ($stmt === false) {
-                exit('error in sql insert1');
-            }
-            $rc = $stmt->bind_param('isiss', $userid, $title, $staffeln, $genre, $plattform);
-            if (!$rc) {
-                exit('error in sql insert2');
-            }
-            $rc = $stmt->execute();
-            if (!$rc) {
-                exit('error in sql insert3');
-            }
+            $platform = $_POST['plattform'];
+            AddToWatchlist($userid, $title, $staffeln, $genre, $platform);
+            header("Location: {$_SERVER['REQUEST_URI']}", true, 303); // PRG-Pattern
         }
+
 
 
         ?>
@@ -86,7 +91,8 @@ include_once "config.php"
             </thead>
             <tbody>
                 <tr>
-                    <td class="text_center"><button type="submit" id="addBtn" name="addBtn" value="submit" form="add_form">+</button></td>
+                    <td class="text_center"><button type="submit" id="addBtn" name="addBtn" value="submit"
+                            form="add_form">+</button></td>
                     <td><input type="text" id="titel" name="titel" form="add_form" required></td>
                     <td><input type="number" id="staffeln" name="staffeln" form="add_form" required></td>
                     <td><input type="text" id="genre" name="genre" form="add_form" required></td>
@@ -95,52 +101,11 @@ include_once "config.php"
                     <td></td>
                 </tr>
                 <?php
-                $extra_elements = 0;
-                $push_elements = [];
-                if ($filter_data) {
-                    $sql_string = 'SELECT title, seasons, genre, platform
-                     FROM Watching
-                     WHERE user_id = ?
-                     AND title LIKE ?
-                     AND genre LIKE ?
-                     AND platform LIKE ?';
-                } else {
-                    $sql_string = 'SELECT title, seasons, genre, platform
-                     FROM Watching
-                     WHERE user_id = ?';
-                }
-
-                $stmt = $mysqli->prepare($sql_string);
-                if ($filter_data) {
-                    $rc = $stmt->bind_param("isss", $userid, $filter_titel, $filter_genre, $filter_platform);
-                } else {
-                    $rc = $stmt->bind_param("i", $userid);
-                }
-                if (!$rc) {
-                    exit('error in sql get1');
-                }
-
-                $rc = $stmt->execute();
-                if (!$rc) {
-                    exit('error in sql get2');
-                }
-
-                $res = $stmt->get_result();
-
-                if ($res === false) {
-                    exit('error in sql get3');
-                }
+                $watchlist = GetWatchlist($userid, $filter_data);
 
                 $i = 0;
-                while (true) {
-                    $row = mysqli_fetch_array($res);
-                    if ($row === false) {
-                        exit('error in row iteration');
-                    }
-                    if (is_null($row)) {
-                        break;
-                    }
-                    $i = $i + 1;
+                foreach ($watchlist['watched'] as $row) {
+                    $i += 1;
                     echo '
                 <tr>
                     <td class="text_center">' . $i . '</td>
@@ -148,11 +113,10 @@ include_once "config.php"
                     <td class="text_right">' . $row['seasons'] . '</td>
                     <td class="text_right">' . $row['genre'] . '</td>
                     <td class="text_right">' . $row['platform'] . '</td>
-                    <td> <button onclick="deleteLine(this)" id="deleteBtn">X</button>  </td>
-                    <td> <button onclick="openEditForm()" id="editBtn">Edit</button>  </td>
+                    <td> <button onclick="deleteId(' . $row['id'] . ')" id="deleteBtn">X</button>  </td>
+                    <td> <button onclick="openEditForm(' . $row['id'] . ')" id="editBtn">Edit</button>  </td>
                 </tr>';
                 }
-
                 ?>
 
             </tbody>
@@ -160,32 +124,65 @@ include_once "config.php"
     </div>
     <!-- edit Form -->
     <div class="form-popup" id="myForm">
-        <form action="/action_page.php" class="form-container">
-            <h1>Edit</h1>
+        <!-- <form action="" class="form-container" method="post"> -->
+        <h1>Edit</h1>
 
-            <input type="text" placeholder="Titel" name="titel" required>
-            <input type="number" placeholder="Staffeln" name="staffel" required>
-            <input type="text" placeholder="Genre" name="genre" required>
-            <input type="text" placeholder="Plattform" name="plattform" required>
+        <input type="text" placeholder="Titel" name="titel" id="edit_title">
+        <input type="number" placeholder="Staffeln" name="staffel" id="edit_staffeln">
+        <input type="text" placeholder="Genre" name="genre" id="edit_genre">
+        <input type="text" placeholder="Plattform" name="plattform" id="edit_platform">
 
-            <button type="submit" class="btn">Bestätigen</button>
-            <button type="button" class="btn cancel" onclick="closeEditForm()">Verwerfen</button>
-        </form>
+        <button class="btn" onclick="submit_edit()">Bestätigen</button>
+        <button type="button" class="btn cancel" onclick="closeEditForm()">Verwerfen</button>
+        <!-- </form> -->
     </div>
     <script type="text/javascript">
-        function openEditForm() {
-            document.getElementById("myForm").style.display = "block";
+        var last_edit_id = -1;
+        function openEditForm(id) {
+            last_edit_id = id;
+            let el = document.getElementById("myForm");
+            el.style.display = "block";
         }
 
         function closeEditForm() {
+            last_edit_id = -1;
             document.getElementById("myForm").style.display = "none";
         }
 
-        function deleteLine(line) {
+        function submit_edit() {
+            let series_id = last_edit_id;
+            last_edit_id = -1;
+            console.assert(series_id != -1);
+            let edit_title = document.getElementById("edit_title").value;
+            let edit_staffeln = document.getElementById("edit_staffeln").value;
+            let edit_genre = document.getElementById("edit_genre").value;
+            let edit_platform = document.getElementById("edit_platform").value;
+
+            let changed_form = new FormData();
+            changed_form.append('edit_series_id', series_id);
+            if (edit_title.length != 0) {
+                changed_form.append('edit_title', edit_title);
+            }
+            if (edit_staffeln.length != 0) {
+                changed_form.append('edit_staffeln', edit_staffeln);
+            }
+            if (edit_genre.length != 0) {
+                changed_form.append('edit_genre', edit_genre);
+            }
+            if (edit_platform.length != 0) {
+                changed_form.append('edit_platform', edit_platform);
+            }
+            fetch(window.location.href, { method: "POST", body: changed_form }).then(() => { location.reload(); });
+        }
+
+        function deleteId(id) {
             // alert(line.parentNode.parentNode.innerText)
-            var row = line.closest('tr')
-            var cells = row.getElementsByTagName('td')
-            alert("line:" + cells[0].innerText + ", Titel:" + cells[1].innerText + ", Staffel:" + cells[2].innerText + "...")
+            let form = new FormData();
+            form.append("delete_series_id", id);
+            fetch(window.location.href, {
+                method: "POST",
+                body: form,
+            }).then(() => { location.reload(); });
         }
     </script>
 

@@ -23,30 +23,14 @@ session_start();
             $username = $_POST['username'];
             $password = $_POST['password'];
 
-            $statement = $mysqli->prepare("SELECT * FROM Users WHERE username = ?");
-            $statement->bind_param("s", $username);
-            $check = $statement->execute();
-
-            assert($check);
-
-            $result = $statement->get_result();
-
-            if (mysqli_num_rows($result) == 0) {
-                $errorMessage = "<p class=\"error\"><strong>Ungültiger Benutzername!</strong></p>";
+            $result = GetUserData($username);
+            if ($result['found'] && password_verify($password, $result['password_hash'])) {
+                $_SESSION['user_name'] = $result['username'];
+                $_SESSION['user_id'] = $result['id'];
+                header('Location: view.php'); // redirect
+                exit;
             } else {
-                assert(mysqli_num_rows($result) == 1);
-
-                $row = mysqli_fetch_array($result);
-                assert($row !== false);
-
-                if (password_verify($password, $row['password_hash'])) {
-                    $_SESSION['user_name'] = $username;
-                    $_SESSION['user_id'] = $row['id'];
-                    header('Location: view.php'); // redirect
-                    exit;
-                } else {
-                    $errorMessage = "<p class=\"error\"><strong>Ungültiges Passwort!</strong></p>";
-                }
+                $errorMessage = "<p class=\"error\"><strong>Ungültiger Username oder Passwort!</strong></p>";
             }
         }
 
