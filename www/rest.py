@@ -131,6 +131,7 @@ def db_rest_watchlist_post(uid):
             cursor.execute(
                 query, (int(uid), str(title), int(seasons), str(genre), str(platform))
             )
+            cnx.commit()
         return jsonify({"success": True, "message": "Added Successfully"})
     except:
         return jsonify({"success": False, "error": "An Unknown Error Occurred!"}), 500
@@ -199,6 +200,7 @@ def db_rest_watchlist_set(series_id):
 
         with cnx.cursor() as cursor:
             cursor.execute(query, param_list)
+            cnx.commit()
         return jsonify({"success": True, "message": "Updated Successfully"})
     except:
         return jsonify({"success": False, "error": "An Unknown Error Occurred!"}), 500
@@ -210,6 +212,7 @@ def db_rest_watchlist_delete(series_id):
         with cnx.cursor() as cursor:
             query = "DELETE FROM Watching WHERE series_id = %s"
             cursor.execute(query, (int(series_id),))
+            cnx.commit()
         return jsonify({"success": True, "message": "Deleted Successfully"})
     except:
         return jsonify({"success": False, "error": "An Unknown Error Occurred!"}), 500
