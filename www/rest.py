@@ -5,7 +5,7 @@ app = Flask(__name__)
 app.config["JSON_AS_ASCII"] = False
 
 cnx = mysql.connector.connect(
-    user="root", password="", host="localhost", database="Webtech", port=5000
+    user="root", password="", host="localhost", database="Webtech"
 )
 
 assert cnx.is_connected()
@@ -13,7 +13,7 @@ assert cnx.is_connected()
 
 @app.route("/db/rest/user/<username>", methods=["GET"])
 def db_rest_user_get(username):
-    with cnx.cursor() as cursor:
+    with cnx.cursor(buffered=True) as cursor:
         query = "SELECT id, username, password_hash FROM Users WHERE username = %s"
         result = cursor.execute(query, (username,))
 
@@ -83,13 +83,13 @@ def db_rest_watchlist_get(uid):
         filter_genre = get_filter_string(arg_list.get("genre"))
         filter_platform = get_filter_string(arg_list.get("platform"))
         with cnx.cursor(buffered=True) as cursor:
-            query = "SELECT title, seasons, genre, platform FROM Watching WHERE user_id = %s AND title LIKE %s AND genre LIKE %s AND platform LIKE %s"
+            query = "SELECT series_id, title, seasons, genre, platform FROM Watching WHERE user_id = %s AND title LIKE %s AND genre LIKE %s AND platform LIKE %s"
             cursor.execute(
                 query, (user_id, filter_title, filter_genre, filter_platform)
             )
 
             output_list = []
-            for title, seasons, genre, platform in cursor.fetchall():
+            for series_id, title, seasons, genre, platform in cursor.fetchall():
                 output_list.append(
                     {
                         "id": series_id,
@@ -199,6 +199,6 @@ def db_rest_watchlist_delete(series_id):
 
 if __name__ == "__main__":
     try:
-        app.run(debug=True)
+        app.run(debug=True, port=5000)
     finally:
         cnx.close()
