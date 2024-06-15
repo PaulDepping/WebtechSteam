@@ -8,7 +8,7 @@ include_once "config.php"
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="css/viewstyle.css">
+    <link rel="stylesheet" href="css\viewstyle1.css">
     <title>STEAM</title>
 </head>
 
@@ -69,9 +69,9 @@ include_once "config.php"
 
     <div class="container_top">
         <form method="get">
-            <input type="text" id="ftitel" name="ftitel" placeholder="Titel">
-            <input type="text" id="fgenre" name="fgenre" placeholder="Genre">
-            <input type="text" id="Plattform" name="fplatform" placeholder="Plattform">
+            <input type="text" id="ftitel" name="ftitel" placeholder="Suche nach Titel">
+            <input type="text" id="fgenre" name="fgenre" placeholder="Suche nach Genre">
+            <input type="text" id="Plattform" name="fplatform" placeholder="Suche nach Plattform">
             <button type="submit" id="search">Suchen</button>
         </form>
     </div>
@@ -91,12 +91,11 @@ include_once "config.php"
             </thead>
             <tbody>
                 <tr>
-                    <td class="text_center"><button type="submit" id="addBtn" name="addBtn" value="submit"
-                            form="add_form">+</button></td>
-                    <td><input type="text" id="titel" name="titel" form="add_form" required></td>
-                    <td><input type="number" id="staffeln" name="staffeln" form="add_form" required></td>
-                    <td><input type="text" id="genre" name="genre" form="add_form" required></td>
-                    <td><input type="text" id="plattform" name="plattform" form="add_form" required></td>
+                    <td><button type="submit" id="addBtn" name="addBtn" value="submit" form="add_form"><img src="css/addbtn.png"/></button></td>
+                    <td class="placeholderAdd"><input type="text" id="titel" name="titel" form="add_form" placeholder="Titel eingeben" required ></td>
+                    <td class="placeholderAdd"><input type="number" id="staffeln" name="staffeln" form="add_form" placeholder="Staffeln eingeben" required></td>
+                    <td class="placeholderAdd"><input type="text" id="genre" name="genre" form="add_form" placeholder="Genre eingeben" required></td>
+                    <td class="placeholderAdd"><input type="text" id="plattform" name="plattform" form="add_form" placeholder="Streaming-Plattform eingeben" required></td>
                     <td></td>
                     <td></td>
                 </tr>
@@ -113,8 +112,8 @@ include_once "config.php"
                     <td class="text_right">' . $row['seasons'] . '</td>
                     <td class="text_right">' . $row['genre'] . '</td>
                     <td class="text_right">' . $row['platform'] . '</td>
-                    <td> <button onclick="deleteId(' . $row['id'] . ')" id="deleteBtn">X</button>  </td>
-                    <td> <button onclick="openEditForm(' . $row['id'] . ')" id="editBtn">Edit</button>  </td>
+                    <td> <button onclick="deleteId(' . $row['id'] . ')" id="deleteBtn"><img src="css/delete.png"/></button>  </td>
+                    <td> <button onclick="openEditForm(' . $row['id'] . ')" id="editBtn"><img src="css/edit.png"/></button>  </td>
                 </tr>';
                 }
                 ?>
@@ -126,14 +125,14 @@ include_once "config.php"
     <div class="form-popup" id="myForm">
         <!-- <form action="" class="form-container" method="post"> -->
         <h1>Edit</h1>
-
-        <input type="text" placeholder="Titel" name="titel" id="edit_title">
-        <input type="number" placeholder="Staffeln" name="staffel" id="edit_staffeln">
-        <input type="text" placeholder="Genre" name="genre" id="edit_genre">
-        <input type="text" placeholder="Plattform" name="plattform" id="edit_platform">
-
-        <button class="btn" onclick="submit_edit()">Bestätigen</button>
-        <button type="button" class="btn cancel" onclick="closeEditForm()">Verwerfen</button>
+        <div class=bittefunktionier>    
+            <input type="text" placeholder="Titel" name="titel" id="edit_title">
+            <input type="number" placeholder="Staffeln" name="staffel" id="edit_staffeln">
+            <input type="text" placeholder="Genre" name="genre" id="edit_genre">
+            <input type="text" placeholder="Plattform" name="plattform" id="edit_platform">
+            <button class="btn" onclick="submit_edit()">Bestätigen</button>
+            <button type="button" class="btn cancel" onclick="closeEditForm()">Verwerfen</button>
+        </div>
         <!-- </form> -->
     </div>
     <script type="text/javascript">

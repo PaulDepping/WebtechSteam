@@ -1,0 +1,252 @@
+body {
+	background-color: #26262a;
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	font-family: 'Trebuchet MS';
+	font-size: 3em;
+	font-weight: bold;
+	-webkit-text-fill-color: #000000;
+}
+
+input {
+	font-family: inherit;
+	font-size: inherit;
+	font-weight: inherit;
+	-webkit-text-fill-color: #000000;
+}
+
+
+.container_top {
+	position: relative;
+	display: flex;
+	justify-content: center;
+	margin-bottom: 0.5em;
+}
+
+.container_top input {
+	font-family: inherit;
+	font-weight: normal;
+	font-size: 20px;
+	-webkit-text-fill-color: #000000;
+	-webkit-text-stroke: 1px inherit;
+}
+
+.placeholderAdd ::placeholder {
+	font-family: 'Trebuchet MS';
+	font-size: 20px;
+	-webkit-text-fill-color: rgba(30, 30, 30, 0.671)
+}
+
+::placeholder {
+	font-family: 'Trebuchet MS';
+	font-size: 1em;
+	-webkit-text-fill-color: #5d5d5d;
+	
+}
+
+.container_bot {
+	background-color: #0000000f;
+	margin: 0 auto;
+}
+
+.container_bot table {
+	width: 98%;
+	border-collapse: collapse;
+}
+
+
+h1 {
+	-webkit-text-fill-color: #C3073F;
+	-webkit-text-stroke: 2px #4E4E50;
+	font-size: 5vw;
+	margin-top: 0.01em;
+	margin-bottom: 0.01em;
+	font-family: Trebuchet MS, sans-serif;
+}
+
+.contain-header {
+	position: relative;
+	background-image: url(tv42.png);
+	background-position: center;
+	background-size: contain;
+	background-repeat: no-repeat;
+	padding: 3.5%;
+}
+
+.contain-header h1 {
+	z-index: 1;
+	text-align: center;
+}
+
+.contain-header input {
+	position: absolute;
+	right: 10px;
+	top: 5px;
+	background-color: #950740;
+	height: 50px;
+	width: 110px;
+	width: fit-content;
+	font-family: inherit;
+	font-size: 23px;
+	cursor: pointer;
+}
+
+.table-container {
+	border-collapse: collapse;
+	width: 60%;
+	min-width: 400px;
+	font-size: 25px;
+	border-radius: 5px 5px 0 0;
+	overflow: hidden;
+	box-shadow: 0 0 40px rgb(0, 0, 0, 0.55);
+	margin: 0 auto;
+}
+
+th,
+td {
+	border: 3px solid #1A1A1D;
+}
+
+
+th.text_right,
+td.text_right {
+	border: 3px solid #1A1A1D;
+	padding-left: 0.2em;
+}
+
+
+th {
+	background-color: #4E4E50;
+}
+
+tr {
+	background-color: #6F2232;
+}
+
+tbody tr:nth-of-type(even) {
+	background-color: #950740;
+}
+
+button {
+	width: 100%;
+}
+
+table input {
+	width: 100%;
+	border: none;
+	outline: none;
+	background-color: rgba(0, 0, 0, 0);
+}
+
+.text_center {
+	text-align: center;
+}
+
+.text_right {
+	text-align: left;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+	-moz-appearance: textfield;
+}
+
+#search {
+	width: auto;
+	font-family: inherit;
+	font-weight: inherit;
+	font-size: 43%;
+	cursor: pointer;
+}
+
+#addBtn {
+	background-color: transparent;
+	cursor: pointer;
+}
+#addBtn img {
+	padding: 1px;
+	width: 30px;
+}
+
+#singleHashtag {
+	font-size: 135%;
+}
+
+.form-popup {
+	display: none;
+	background-color: #26262a;
+	font-size: 30px;
+	position: fixed;
+	bottom: 50%;
+	right: 60px;
+	left: 60px;
+	border: 3px solid #f1f1f1;
+	z-index: 9;
+
+}
+.form-popup h1 {
+	font-size: 40px;
+	text-align: center;
+	-webkit-text-fill-color:#C3073F;
+	-webkit-text-stroke: #00000009;
+	font-weight: bold;
+}
+.bittefunktionier {
+	position: relative;
+	display: flex;
+	justify-content: center;
+	margin-bottom: 0.5em;
+}
+.bittefunktionier input {
+	font-family: inherit;
+	font-weight: normal;
+	font-size: 20px;
+	-webkit-text-fill-color: #000000;
+	-webkit-text-stroke: 1px inherit;
+	margin-left: 10px;
+	width: auto;
+}
+
+.bittefunktionier button {
+	width: auto;
+	font-family: inherit;
+	font-weight: inherit;
+	font-size: 65%;
+	cursor: pointer;
+	vertical-align:  middle;
+	margin-left: 10px;
+}
+
+.form-container {
+	max-width: 300px;
+	padding: 10px;
+	background-color: white;
+}
+
+.form-container .cancel {
+	background-color: red;
+}
+
+#deleteBtn {
+	background-color: transparent;
+	cursor: pointer;
+}
+#deleteBtn img {
+	padding: 1px;
+	width: 30px;
+}
+
+#editBtn {
+	background-color: transparent;
+	cursor: pointer;
+}
+#editBtn img {
+	padding: 1px;
+	width: 30px;
+}
