@@ -2,14 +2,6 @@
 // Basic connection settings
 $baseUrl = 'http://localhost:5000';
 
-$databaseHost = 'localhost';
-$databaseUsername = 'root';
-$databasePassword = '';
-$databaseName = 'Webtech';
-
-// Connect to the database
-$mysqli = mysqli_connect($databaseHost, $databaseUsername, $databasePassword, $databaseName);
-
 
 function GetUserData($username)
 {
@@ -35,6 +27,9 @@ function GetUserData($username)
     curl_close($curl);
 
     $json = json_decode($response, associative: true);
+    if (is_null($json)) {
+        throw new Exception('Unknown Response from REST-API! Could not decode to JSON!');
+    }
     if (!($json['success'])) {
         throw new Exception('REST-API was not successful!');
     }
@@ -69,6 +64,10 @@ function PostUserData($username, $password_hash)
     curl_close($curl);
 
     $json = json_decode($response, associative: true);
+
+    if (is_null($json)) {
+        throw new Exception('Unknown Response from REST-API! Could not decode to JSON!');
+    }
     if (!($json['success'])) {
         throw new Exception('REST-API was not successful!');
     }
@@ -99,6 +98,9 @@ function GetWatchlist($user_id, $filter_data = array())
     curl_close($curl);
 
     $json = json_decode($response, associative: true);
+    if (is_null($json)) {
+        throw new Exception('Unknown Response from REST-API! Could not decode to JSON!');
+    }
     if (!($json['success'])) {
         throw new Exception('REST-API was not successful!');
     }
@@ -135,6 +137,9 @@ function AddToWatchlist($user_id, $title, $seasons, $genre, $platform)
     curl_close($curl);
 
     $json = json_decode($response, associative: true);
+    if (is_null($json)) {
+        throw new Exception('Unknown Response from REST-API! Could not decode to JSON!');
+    }
     if (!($json['success'])) {
         throw new Exception('REST-API was not successful!');
     }
@@ -185,6 +190,9 @@ function ChangeWatchlist($series_id, $user_id = null, $title = null, $seasons = 
     curl_close($curl);
 
     $json = json_decode($response, associative: true);
+    if (is_null($json)) {
+        throw new Exception('Unknown Response from REST-API! Could not decode to JSON!');
+    }
     if (!($json['success'])) {
         throw new Exception('REST-API was not successful!');
     }
@@ -218,6 +226,9 @@ function DeleteWatched($series_id)
     curl_close($curl);
 
     $json = json_decode($response, associative: true);
+    if (is_null($json)) {
+        throw new Exception('Unknown Response from REST-API! Could not decode to JSON!');
+    }
     if (!($json['success'])) {
         throw new Exception('REST-API was not successful!');
     }
