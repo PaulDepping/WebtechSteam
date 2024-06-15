@@ -159,7 +159,7 @@ def db_rest_watchlist_set(series_id):
         else:
             query += ", "
         query += "seasons = %s"
-        param_list.append(int(seasons))
+        param_list.append(int(new_seasons))
 
     if new_genre is not None:
         if not was_set:
@@ -167,7 +167,7 @@ def db_rest_watchlist_set(series_id):
         else:
             query += ", "
         query += "genre = %s"
-        param_list.append(str(genre))
+        param_list.append(str(new_genre))
 
     if new_platform is not None:
         if not was_set:
