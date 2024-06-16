@@ -62,10 +62,10 @@ def db_rest_watchlist_get(uid):
     arg_list = request.args
     if len(arg_list) == 0:
         with cnx.cursor(buffered=True) as cursor:
-            query = "SELECT series_id, title, seasons, genre, platform FROM Watching WHERE user_id = %s"
+            query = "SELECT series_id, title, seasons, genre, platform, rating FROM Watching WHERE user_id = %s"
             cursor.execute(query, (user_id,))
             output_list = []
-            for series_id, title, seasons, genre, platform in cursor.fetchall():
+            for series_id, title, seasons, genre, platform, rating in cursor.fetchall():
                 output_list.append(
                     {
                         "id": series_id,
@@ -73,6 +73,7 @@ def db_rest_watchlist_get(uid):
                         "seasons": seasons,
                         "genre": genre,
                         "platform": platform,
+                        "rating": rating,
                     }
                 )
             return jsonify(
@@ -83,13 +84,13 @@ def db_rest_watchlist_get(uid):
         filter_genre = get_filter_string(arg_list.get("genre"))
         filter_platform = get_filter_string(arg_list.get("platform"))
         with cnx.cursor(buffered=True) as cursor:
-            query = "SELECT series_id, title, seasons, genre, platform FROM Watching WHERE user_id = %s AND title LIKE %s AND genre LIKE %s AND platform LIKE %s"
+            query = "SELECT series_id, title, seasons, genre, platform, rating FROM Watching WHERE user_id = %s AND title LIKE %s AND genre LIKE %s AND platform LIKE %s"
             cursor.execute(
                 query, (user_id, filter_title, filter_genre, filter_platform)
             )
 
             output_list = []
-            for series_id, title, seasons, genre, platform in cursor.fetchall():
+            for series_id, title, seasons, genre, platform, rating in cursor.fetchall():
                 output_list.append(
                     {
                         "id": series_id,
@@ -97,6 +98,7 @@ def db_rest_watchlist_get(uid):
                         "seasons": seasons,
                         "genre": genre,
                         "platform": platform,
+                        "rating": rating,
                     }
                 )
             return jsonify(
@@ -112,11 +114,20 @@ def db_rest_watchlist_post(uid):
     seasons = request_data["seasons"]
     genre = request_data["genre"]
     platform = request_data["platform"]
+    rating = request_data["rating"]
 
     with cnx.cursor() as cursor:
-        query = "INSERT INTO Watching (user_id, title, seasons, genre, platform) VALUES (%s, %s, %s, %s, %s)"
+        query = "INSERT INTO Watching (user_id, title, seasons, genre, platform, rating) VALUES (%s, %s, %s, %s, %s, %s)"
         cursor.execute(
-            query, (int(uid), str(title), int(seasons), str(genre), str(platform))
+            query,
+            (
+                int(uid),
+                str(title),
+                int(seasons),
+                str(genre),
+                str(platform),
+                int(rating),
+            ),
         )
         cnx.commit()
     return jsonify({"success": True, "message": "Added Successfully"})
@@ -134,6 +145,7 @@ def db_rest_watchlist_set(series_id):
     new_seasons = request_data.get("seasons")
     new_genre = request_data.get("genre")
     new_platform = request_data.get("platform")
+    new_rating = request_data.get("rating")
 
     was_set = False
 
@@ -176,6 +188,13 @@ def db_rest_watchlist_set(series_id):
             query += ", "
         query += "platform = %s"
         param_list.append(str(new_platform))
+    if new_rating is not None:
+        if not was_set:
+            was_set = True
+        else:
+            query += ", "
+        query += "rating = %s"
+        param_list.append(int(new_rating))
 
     assert was_set
 

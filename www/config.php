@@ -108,7 +108,7 @@ function GetWatchlist($user_id, $filter_data = array())
 
 }
 
-function AddToWatchlist($user_id, $title, $seasons, $genre, $platform)
+function AddToWatchlist($user_id, $title, $seasons, $genre, $platform, $rating)
 {
     global $baseUrl;
     $curl = curl_init();
@@ -124,7 +124,7 @@ function AddToWatchlist($user_id, $title, $seasons, $genre, $platform)
             CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => 'POST',
-            CURLOPT_POSTFIELDS => json_encode(array('title' => $title, 'seasons' => $seasons, "genre" => $genre, 'platform' => $platform)),
+            CURLOPT_POSTFIELDS => json_encode(array('title' => $title, 'seasons' => $seasons, "genre" => $genre, 'platform' => $platform, 'rating' => $rating)),
             CURLOPT_HTTPHEADER => array(
                 'Content-Type: application/json'
             ),
@@ -147,7 +147,7 @@ function AddToWatchlist($user_id, $title, $seasons, $genre, $platform)
 
 }
 
-function ChangeWatchlist($series_id, $user_id = null, $title = null, $seasons = null, $genre = null, $platform = null)
+function ChangeWatchlist($series_id, $user_id = null, $title = null, $seasons = null, $genre = null, $platform = null, $rating = null)
 {
     global $baseUrl;
 
@@ -164,6 +164,10 @@ function ChangeWatchlist($series_id, $user_id = null, $title = null, $seasons = 
     if (!is_null($platform)) {
         $arguments['platform'] = $platform;
     }
+    if (!is_null($rating)) {
+        $arguments['rating'] = $rating;
+    }
+
 
     $curl = curl_init();
 

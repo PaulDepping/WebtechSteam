@@ -31,7 +31,7 @@ include_once "config.php"
         }
 
         if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["edit_series_id"])) {
-            ChangeWatchlist($_POST['edit_series_id'], null, $_POST['edit_title'] ?? null, $_POST['edit_staffeln'] ?? null, $_POST['edit_genre'] ?? null, $_POST['edit_platform'] ?? null);
+            ChangeWatchlist($_POST['edit_series_id'], null, $_POST['edit_title'] ?? null, $_POST['edit_staffeln'] ?? null, $_POST['edit_genre'] ?? null, $_POST['edit_platform'] ?? null, $_POST['edit_rating'] ?? null);
             header("Location: {$_SERVER['REQUEST_URI']}", true, 303); // PRG-Pattern
         }
 
@@ -57,7 +57,8 @@ include_once "config.php"
             $staffeln = $_POST['staffeln'];
             $genre = $_POST['genre'];
             $platform = $_POST['plattform'];
-            AddToWatchlist($userid, $title, $staffeln, $genre, $platform);
+            $rating = $_POST['rating'];
+            AddToWatchlist($userid, $title, $staffeln, $genre, $platform, $rating);
             header("Location: {$_SERVER['REQUEST_URI']}", true, 303); // PRG-Pattern
         }
 
@@ -85,19 +86,39 @@ include_once "config.php"
                     <th class="text_center">Anz. Staffeln</th>
                     <th class="text_center">Genre</th>
                     <th class="text_center">Streaming-Plattform</th>
+                    <th class="text_center">Rating</th>
                     <th></th>
                     <th></th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td><button type="submit" id="addBtn" name="addBtn" value="submit" form="add_form"><img src="css/addbtn.png"/></button></td>
-                    <td class="placeholderAdd"><input type="text" id="titel" name="titel" form="add_form" placeholder="Titel eingeben" required ></td>
-                    <td class="placeholderAdd"><input type="number" id="staffeln" name="staffeln" form="add_form" placeholder="Staffeln eingeben" required></td>
-                    <td class="placeholderAdd"><input type="text" id="genre" name="genre" form="add_form" placeholder="Genre eingeben" required></td>
-                    <td class="placeholderAdd"><input type="text" id="plattform" name="plattform" form="add_form" placeholder="Streaming-Plattform eingeben" required></td>
-                    <td></td>
-                    <td></td>
+                    <<<<<<< HEAD <td><button type="submit" id="addBtn" name="addBtn" value="submit" form="add_form"><img
+                                src="css/addbtn.png" /></button></td>
+                        <td class="placeholderAdd"><input type="text" id="titel" name="titel" form="add_form"
+                                placeholder="Titel eingeben" required></td>
+                        <td class="placeholderAdd"><input type="number" id="staffeln" name="staffeln" form="add_form"
+                                placeholder="Staffeln eingeben" required></td>
+                        <td class="placeholderAdd"><input type="text" id="genre" name="genre" form="add_form"
+                                placeholder="Genre eingeben" required></td>
+                        <td class="placeholderAdd"><input type="text" id="plattform" name="plattform" form="add_form"
+                                placeholder="Streaming-Plattform eingeben" required></td>
+                        =======
+                        <td><button type="submit" id="addBtn" name="addBtn" value="submit" form="add_form"><img
+                                    src="css/addbtn.png" /></button></td>
+                        <td class="placeholderAdd"><input type="text" id="titel" name="titel" form="add_form"
+                                placeholder="Titel eingeben" required></td>
+                        <td class="placeholderAdd"><input type="number" id="staffeln" name="staffeln" form="add_form"
+                                placeholder="Staffeln eingeben" required></td>
+                        <td class="placeholderAdd"><input type="text" id="genre" name="genre" form="add_form"
+                                placeholder="Genre eingeben" required></td>
+                        <td class="placeholderAdd"><input type="text" id="plattform" name="plattform" form="add_form"
+                                placeholder="Streaming-Plattform eingeben" required></td>
+                        <td class="placeholderAdd"><input type="range" min="0" max="5" step="1" id="rating"
+                                name="rating" form="add_form" placeholder="Rating (0-5) eingeben" required></td>
+                        >>>>>>> dc44612 (added rating)
+                        <td></td>
+                        <td></td>
                 </tr>
                 <?php
                 $watchlist = GetWatchlist($userid, $filter_data);
@@ -112,6 +133,7 @@ include_once "config.php"
                     <td class="text_right">' . $row['seasons'] . '</td>
                     <td class="text_right">' . $row['genre'] . '</td>
                     <td class="text_right">' . $row['platform'] . '</td>
+                    <td class="text_right">' . $row['rating'] . '</td>
                     <td> <button onclick="deleteId(' . $row['id'] . ')" id="deleteBtn"><img src="css/delete.png"/></button>  </td>
                     <td> <button onclick="openEditForm(' . $row['id'] . ')" id="editBtn"><img src="css/edit.png"/></button>  </td>
                 </tr>';
@@ -125,11 +147,12 @@ include_once "config.php"
     <div class="form-popup" id="myForm">
         <!-- <form action="" class="form-container" method="post"> -->
         <h1>Edit</h1>
-        <div class=bittefunktionier>    
+        <div class=bittefunktionier>
             <input type="text" placeholder="Titel" name="titel" id="edit_title">
             <input type="number" placeholder="Staffeln" name="staffel" id="edit_staffeln">
             <input type="text" placeholder="Genre" name="genre" id="edit_genre">
             <input type="text" placeholder="Plattform" name="plattform" id="edit_platform">
+            <input type="range" min="0" max="5" step="1" placeholder="Rating" name="rating" id="edit_rating">
             <button class="btn" onclick="submit_edit()">Bestätigen</button>
             <button type="button" class="btn cancel" onclick="closeEditForm()">Verwerfen</button>
         </div>
@@ -156,6 +179,7 @@ include_once "config.php"
             let edit_staffeln = document.getElementById("edit_staffeln").value;
             let edit_genre = document.getElementById("edit_genre").value;
             let edit_platform = document.getElementById("edit_platform").value;
+            let edit_rating = document.getElementById("edit_rating").value;
 
             let changed_form = new FormData();
             changed_form.append('edit_series_id', series_id);
@@ -170,6 +194,12 @@ include_once "config.php"
             }
             if (edit_platform.length != 0) {
                 changed_form.append('edit_platform', edit_platform);
+            }
+            if (edit_platform.length != 0) {
+                changed_form.append('edit_platform', edit_platform);
+            }
+            if (edit_rating.length != 0) {
+                changed_form.append('edit_rating', edit_rating);
             }
             fetch(window.location.href, { method: "POST", body: changed_form }).then(() => { location.reload(); });
         }

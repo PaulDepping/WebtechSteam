@@ -14,6 +14,7 @@ CREATE TABLE Webtech.Watching (
     seasons INT NOT NULL,
     genre VARCHAR(255) NOT NULL,
     platform VARCHAR(255) NOT NULL,
+    rating INT NOT NULL,
     PRIMARY KEY (series_id)
 );
 
@@ -21,5 +22,5 @@ CREATE TABLE Webtech.Watching (
 INSERT INTO Webtech.Users (username, password_hash) 
 VALUES ('demo', '$2y$10$eNx2Apk0p4VlmsWDan5d5ut9df3teNMpmp34U9C13i98L64lyuhiC');
 
-INSERT INTO Webtech.Watching (user_id, title, seasons, genre, platform)
-VALUES ((SELECT id FROM Webtech.Users WHERE username='demo'), 'Suits', 9, 'Drama', 'Netflix');  
+INSERT INTO Webtech.Watching (user_id, title, seasons, genre, platform, rating)
+VALUES ((SELECT id FROM Webtech.Users WHERE username='demo'), 'Suits', 9, 'Drama', 'Netflix', 4);  
